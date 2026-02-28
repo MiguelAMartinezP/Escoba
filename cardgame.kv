@@ -1,0 +1,41 @@
+<TableArea>:
+    size: 1500, 550
+    canvas:
+        Color:
+            rgba: 1, 1, 0, self.opacity_value  # Amarillo claro con opacidad animada
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+        Color:
+            rgba: 1, 1, 0, 1  # Borde amarillo sólido
+        Line:
+            rectangle: (*self.pos, *self.size)
+            width: 3
+
+<Card>:
+    size: 200, 300
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: self.scale
+            y: self.scale
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas.after:
+        PopMatrix
+
+<CardGame>:
+    TableArea:
+        id: table_area
+        pos: (self.parent.width - self.width) / 2, ((self.parent.height - self.height) / 2) + 100
+        opacity: 0  # Invisible al inicio
+
+    Card:
+        center_x: root.width / 2
+        y: 15
