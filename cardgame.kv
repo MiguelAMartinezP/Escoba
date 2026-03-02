@@ -1,3 +1,495 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import Factory kivy.factory.Factory
+
+ScreenManager:
+    transition: SlideTransition(direction="left", duration=0.3)
+    id: screen_manager
+
+    MenuScreen:
+        name: "menu"
+
+    PlayScreen:
+        name: "play"
+
+    CustomScreen:
+        name: "custom"
+
+    ConfigScreen:
+        name: "config"
+
+    GameScreen:
+        name: "game"
+
+    ConstructionScreen:
+        name: "construction"
+
+<MenuScreen>:
+    FloatLayout:
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background_menu.png"
+                size: self.size
+                pos: self.pos
+
+        Button:
+            text: "Jugar"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.60}
+            on_release: 
+                app.root.transition = FadeTransition(duration=0.1)
+                app.root.current = "play"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Personalizar Baraja"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.45}
+            on_release: app.root.current = "custom"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Opciones"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.30}
+            on_release: app.root.current = "config"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Salir"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            on_release: 
+                Factory.ConfirmExitPopup().open()
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+<ConfirmExitPopup@Popup>:
+    title: ""
+    separator_height: 0   # quita la línea azul
+    size_hint: 0.5, 0.4
+    auto_dismiss: True
+    background: ""
+    background_color: 0,0,0,0
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0.7   # fondo negro semi-transparente
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20, 20, 20, 20]  # radio de esquinas (arriba-izq, arriba-der, abajo-der, abajo-izq)
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 20
+
+        Label:
+            text: "¿Seguro que quieres salir?"
+            font_size: 20
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 20
+
+            Button:
+                text: "Sí"
+                on_release:
+                    app.stop()
+                    root.dismiss()
+                background: ""
+                background_color: 0,0,0,0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 0.7   # fondo negro semi-transparente
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]  
+
+            Button:
+                text: "No"
+                on_release: root.dismiss()
+                background: ""
+                background_color: 0,0,0,0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 0.7   # fondo negro semi-transparente
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]  
+
+
+<GameScreen>:
+    canvas.before:
+        Rectangle:
+            source: "assets/background.png"
+            size: self.size
+            pos: self.pos
+
+    CardGame:
+        id: card_game
+
+    Button:
+        text: "Atras"
+        font_size: 32
+        color: 1, 0, 0, 1          # texto amarillo
+        background_normal: ""     # quita la textura default
+        size_hint: 0.2, 0.10
+        pos_hint: {"center_x": 0.8, "center_y": 0.80}
+        on_release: 
+            app.root.transition = SlideTransition(direction="right", duration=0.3)
+            app.root.current = "play"
+            app.root.transition = SlideTransition(direction="left", duration=0.3)
+        background: ""
+        background_color: 0,0,0,0
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [20, 20, 20, 20]  
+
+<PlayScreen>:
+    FloatLayout:    
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background_menu.png"
+                size: self.size
+                pos: self.pos
+
+        Button:
+            text: "Solo"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.55}
+            on_release: app.root.current = "game"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Multijugador"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.40}
+            on_release: app.root.current = "construction"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
+            on_release: 
+                app.root.transition = FadeTransition(duration=0.1)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+
+<CartaBoton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0,0,0,0
+    color: 1,0,0,1
+
+    canvas.before:
+        Color:
+            rgba: 0.9,0.9,0.9,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,15,15,15]
+
+<CartaGrid>:
+    viewclass: "CartaBoton"
+    RecycleGridLayout:
+        cols: 5
+        default_size_hint: 1, 1   
+        size_hint: 1, 5            
+        spacing: 100, 30
+
+
+<CustomScreen>:
+    FloatLayout:   
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background.png"
+                size: self.size
+                pos: self.pos
+
+        Spinner:
+            id: valor_spinner
+            text: "Selecciona un valor"
+            values: ["As", "2", "3", "4", "5", "6", "7", "Sota", "Reina", "Rey"]
+            size_hint: 0.2, 0.05
+            pos_hint: {"center_x": 0.25, "center_y": 0.8}
+            on_text: root.valor_seleccionado = self.text
+
+        Button:
+            text: "X"
+            font_size: 32
+            size_hint: 0.1, 0.05
+            color: 1, 0, 0, 1       
+            background_normal: ""     
+            pos_hint: {"center_x": 0.4, "center_y": 0.8}
+            on_release: 
+                valor_spinner.text = "Selecciona un valor"
+                root.valor_seleccionado = valor_spinner.text
+            background: ""
+            background_color: 0,0,0,0
+
+        Spinner:
+            id: palo_spinner
+            text: "Selecciona un palo"
+            values: ["Oros", "Copas", "Espadas", "Bastos"]
+            size_hint: 0.2, 0.05
+            pos_hint: {"center_x": 0.75, "center_y": 0.8}
+            on_text: root.palo_seleccionado = self.text
+
+        Button:
+            text: "X"
+            font_size: 32
+            size_hint: 0.1, 0.05
+            color: 1, 0, 0, 1       
+            background_normal: ""     
+            pos_hint: {"center_x": 0.9, "center_y": 0.8}
+            on_release: 
+                palo_spinner.text = "Selecciona un palo"
+                root.palo_seleccionado = palo_spinner.text
+            background: ""
+            background_color: 0,0,0,0
+
+        CartaGrid:
+            id: cartagrid
+            size_hint: 0.75, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.1, 0.05
+            pos_hint: {"center_x": 0.9, "center_y": 0.9}
+            on_release: 
+                app.root.transition = SlideTransition(direction="right", duration=0.3)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+
+<ConfigScreen>:
+    FloatLayout:    
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background.png"
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: "Configuracion"
+            font_size: 60
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+        Label:
+            text: "Volumen de musica"
+            font_size: 35
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.25, "center_y": 0.65}
+
+        Label:
+            text: "Volumen de efectos"
+            font_size: 35
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.25, "center_y": 0.55}
+
+        Slider:
+            id: music_slider
+            min: 0             # valor mínimo
+            max: 100           # valor máximo
+            value: 50          # valor inicial
+            step: 1            # incrementos al mover el slider
+            size_hint: 0.4, None
+            pos_hint: {"center_x": 0.60, "center_y": 0.65}
+            cursor_image: "assets/slider_icon.png"
+            on_value: music_label.text = f"{self.value:.0f}"
+
+        Label:
+            id: music_label
+            text: f"{music_slider.value:.0f}"
+            font_size: 35
+            pos_hint: {"center_x": 0.85, "center_y": 0.65}
+
+        Slider:
+            id: fx_slider
+            min: 0             # valor mínimo
+            max: 100           # valor máximo
+            value: 50          # valor inicial
+            step: 1            # incrementos al mover el slider
+            size_hint: 0.4, None
+            pos_hint: {"center_x": 0.60, "center_y": 0.55}
+            cursor_image: "assets/slider_icon.png"
+            on_value: fx_label.text = f"{self.value:.0f}"
+
+        Label:
+            id: fx_label
+            text: f"{fx_slider.value:.0f}"
+            font_size: 35
+            pos_hint: {"center_x": 0.85, "center_y": 0.55}
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.2, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.20}
+            on_release: 
+                app.root.transition = SlideTransition(direction="right", duration=0.3)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+
+<ConstructionScreen>:
+    FloatLayout:
+
+        canvas.before:
+            Rectangle:
+                source: "assets/construction.png"
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: "PAGINA EN CONSTRUCCION"
+            font_size: 50
+            color: 1, 1, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.25, "center_y": 0.75}
+
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.2, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            on_release: 
+                app.root.transition = SlideTransition(direction="right", duration=0.3)
+                app.root.current = "play"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+
+
 <TableArea>:
     size: 1500, 550
     canvas:
@@ -32,10 +524,44 @@
 
 <CardGame>:
     TableArea:
-        id: table_area
         pos: (self.parent.width - self.width) / 2, ((self.parent.height - self.height) / 2) + 100
-        opacity: 0  # Invisible al inicio
+        id: table_area
+        opacity: 0
 
     Card:
+        id: card
         center_x: root.width / 2
         y: 15
+
+    Button:
+        text: "Paint"
+        size_hint: None, None
+        size: 100, 50
+        pos: 20, 20
+        on_release:
+            app.paint_card()
+
+    Button:
+        text: "Borrar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 140, 20
+        on_release:
+            app.clear_card()
+
+    Button:
+        text: "Guardar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 260, 20
+        on_release:
+            app.save_card_image()
+
+    Button:
+        text: "Cargar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 380, 20
+        on_release:
+            app.load_card_image()
+
