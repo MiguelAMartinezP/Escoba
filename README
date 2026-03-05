@@ -1,5 +1,16 @@
-IMPORTANTE:
-Antes de abrir VS Code, ejecutar este comando. Al estar en un entorno de devcontainer, la app se
-intenta renderizar dentro del contenedor, con este comando hacemos que la app se pueda ver localmente.
+README DEL PROTOTIPO:
 
-xhost +local:docker
+Para ejecutar el prototipo de la app se debe entrar en /prototipo y crear un entorno virtual
+de python con las dependencias de /prototipo/requirements.txt
+
+# Crear entorno
+python3 -m venv venv
+
+# Activar entorno
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Lanzar la app
+python gui.py
