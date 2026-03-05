@@ -1,0 +1,5 @@
+IMPORTANTE:
+Antes de abrir VS Code, ejecutar este comando. Al estar en un entorno de devcontainer, la app se
+intenta renderizar dentro del contenedor, con este comando hacemos que la app se pueda ver localmente.
+
+xhost +local:docker
