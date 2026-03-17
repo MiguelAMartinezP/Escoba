@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libxinerama1 \
     libxi6 \
     mesa-utils \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace

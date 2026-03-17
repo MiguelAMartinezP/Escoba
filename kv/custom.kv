@@ -1,0 +1,100 @@
+<CartaBoton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0,0,0,0
+    color: 1,0,0,1
+
+    canvas.before:
+        Color:
+            rgba: 0.9,0.9,0.9,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,15,15,15]
+
+<CartaGrid>:
+    viewclass: "CartaBoton"
+    RecycleGridLayout:
+        cols: 5
+        default_size_hint: 1, 1   
+        size_hint: 1, 5            
+        spacing: 100, 30
+
+
+<CustomScreen>:
+    FloatLayout:   
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background.png"
+                size: self.size
+                pos: self.pos
+
+        Spinner:
+            id: valor_spinner
+            text: "Selecciona un valor"
+            values: ["As", "2", "3", "4", "5", "6", "7", "Sota", "Reina", "Rey"]
+            size_hint: 0.2, 0.05
+            pos_hint: {"center_x": 0.25, "center_y": 0.8}
+            on_text: root.valor_seleccionado = self.text
+
+        Button:
+            text: "X"
+            font_size: 32
+            size_hint: 0.1, 0.05
+            color: 1, 0, 0, 1       
+            background_normal: ""     
+            pos_hint: {"center_x": 0.4, "center_y": 0.8}
+            on_release: 
+                valor_spinner.text = "Selecciona un valor"
+                root.valor_seleccionado = valor_spinner.text
+            background: ""
+            background_color: 0,0,0,0
+
+        Spinner:
+            id: palo_spinner
+            text: "Selecciona un palo"
+            values: ["Oros", "Copas", "Espadas", "Bastos"]
+            size_hint: 0.2, 0.05
+            pos_hint: {"center_x": 0.75, "center_y": 0.8}
+            on_text: root.palo_seleccionado = self.text
+
+        Button:
+            text: "X"
+            font_size: 32
+            size_hint: 0.1, 0.05
+            color: 1, 0, 0, 1       
+            background_normal: ""     
+            pos_hint: {"center_x": 0.9, "center_y": 0.8}
+            on_release: 
+                palo_spinner.text = "Selecciona un palo"
+                root.palo_seleccionado = palo_spinner.text
+            background: ""
+            background_color: 0,0,0,0
+
+        CartaGrid:
+            id: cartagrid
+            size_hint: 0.75, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.1, 0.05
+            pos_hint: {"center_x": 0.9, "center_y": 0.9}
+            on_release: 
+                app.root.transition = SlideTransition(direction="right", duration=0.3)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]

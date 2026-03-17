@@ -1,0 +1,81 @@
+<ConfigScreen>:
+    FloatLayout:    
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background.png"
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: "Configuracion"
+            font_size: 60
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+        Label:
+            text: "Volumen de musica"
+            font_size: 35
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.25, "center_y": 0.65}
+
+        Label:
+            text: "Volumen de efectos"
+            font_size: 35
+            color: 1, 0, 0, 1    # amarillo (R,G,B,A)
+            pos_hint: {"center_x": 0.25, "center_y": 0.55}
+
+        Slider:
+            id: music_slider
+            min: 0             # valor mínimo
+            max: 100           # valor máximo
+            value: 50          # valor inicial
+            step: 1            # incrementos al mover el slider
+            size_hint: 0.4, None
+            pos_hint: {"center_x": 0.60, "center_y": 0.65}
+            cursor_image: "assets/slider_icon.png"
+            on_value: music_label.text = f"{self.value:.0f}"
+
+        Label:
+            id: music_label
+            text: f"{music_slider.value:.0f}"
+            font_size: 35
+            pos_hint: {"center_x": 0.85, "center_y": 0.65}
+
+        Slider:
+            id: fx_slider
+            min: 0             # valor mínimo
+            max: 100           # valor máximo
+            value: 50          # valor inicial
+            step: 1            # incrementos al mover el slider
+            size_hint: 0.4, None
+            pos_hint: {"center_x": 0.60, "center_y": 0.55}
+            cursor_image: "assets/slider_icon.png"
+            on_value: fx_label.text = f"{self.value:.0f}"
+
+        Label:
+            id: fx_label
+            text: f"{fx_slider.value:.0f}"
+            font_size: 35
+            pos_hint: {"center_x": 0.85, "center_y": 0.55}
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.2, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.20}
+            on_release: 
+                app.root.transition = SlideTransition(direction="right", duration=0.3)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]

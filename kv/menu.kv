@@ -1,0 +1,146 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import Factory kivy.factory.Factory
+
+<MenuScreen>:
+    FloatLayout:
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background_menu.png"
+                size: self.size
+                pos: self.pos
+
+        Button:
+            text: "Jugar"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.60}
+            on_release: 
+                app.root.transition = FadeTransition(duration=0.1)
+                app.root.current = "play"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Personalizar Baraja"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.45}
+            on_release: app.root.current = "custom"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Opciones"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.30}
+            on_release: app.root.current = "config"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Salir"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            on_release:
+                Factory.ConfirmExitPopup().open()
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+<ConfirmExitPopup@Popup>:
+    title: ""
+    separator_height: 0   # quita la línea azul
+    size_hint: 0.5, 0.4
+    auto_dismiss: True
+    background: ""
+    background_color: 0,0,0,0
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0.7   # fondo negro semi-transparente
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20, 20, 20, 20]  # radio de esquinas (arriba-izq, arriba-der, abajo-der, abajo-izq)
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 20
+
+        Label:
+            text: "¿Seguro que quieres salir?"
+            font_size: 20
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 20
+
+            Button:
+                text: "Sí"
+                on_release:
+                    app.stop()
+                    root.dismiss()
+                background: ""
+                background_color: 0,0,0,0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 0.7   # fondo negro semi-transparente
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]  
+
+            Button:
+                text: "No"
+                on_release: root.dismiss()
+                background: ""
+                background_color: 0,0,0,0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 0.7   # fondo negro semi-transparente
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]

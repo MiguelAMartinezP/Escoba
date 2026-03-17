@@ -1,0 +1,32 @@
+#:include kv/menu.kv
+#:include kv/game.kv
+#:include kv/play.kv
+#:include kv/custom.kv
+#:include kv/config.kv
+#:include kv/construction.kv
+#:include kv/widgets.kv
+
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+ScreenManager:
+    transition: SlideTransition(direction="left", duration=0.3)
+    id: screen_manager
+
+    MenuScreen:
+        name: "menu"
+
+    PlayScreen:
+        name: "play"
+
+    CustomScreen:
+        name: "custom"
+
+    ConfigScreen:
+        name: "config"
+
+    GameScreen:
+        name: "game"
+
+    ConstructionScreen:
+        name: "construction"

@@ -1,0 +1,73 @@
+<TableArea>:
+    size: 1500, 550
+    canvas:
+        Color:
+            rgba: 1, 1, 0, self.opacity_value  # Amarillo claro con opacidad animada
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 1, 1, 0, 1  # Borde amarillo sólido
+        Line:
+            rectangle: (*self.pos, *self.size)
+            width: 3
+
+<Card>:
+    size: 200, 300
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: self.scale
+            y: self.scale
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas.after:
+        PopMatrix
+
+<CardGame>:
+    TableArea:
+        pos: (self.parent.width - self.width) / 2, ((self.parent.height - self.height) / 2) + 100
+        id: table_area
+        opacity: 0
+
+    Card:
+        id: card
+        center_x: root.width / 2
+        y: 15
+
+    Button:
+        text: "Paint"
+        size_hint: None, None
+        size: 100, 50
+        pos: 20, 20
+        on_release:
+            app.paint_card()
+
+    Button:
+        text: "Borrar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 140, 20
+        on_release:
+            app.clear_card()
+
+    Button:
+        text: "Guardar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 260, 20
+        on_release:
+            app.save_card_image()
+
+    Button:
+        text: "Cargar"
+        size_hint: None, None
+        size: 100, 50
+        pos: 380, 20
+        on_release:
+            app.load_card_image()

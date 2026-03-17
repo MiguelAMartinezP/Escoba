@@ -1,0 +1,65 @@
+<PlayScreen>:
+    FloatLayout:    
+
+        canvas.before:
+            Rectangle:
+                source: "assets/background_menu.png"
+                size: self.size
+                pos: self.pos
+
+        Button:
+            text: "Solo"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.55}
+            on_release: app.root.current = "game"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Multijugador"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.40}
+            on_release: app.root.current = "construction"
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]  
+
+        Button:
+            text: "Atras"
+            font_size: 32
+            color: 1, 0, 0, 1          # texto amarillo
+            background_normal: ""     # quita la textura default
+            size_hint: 0.3, 0.10
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
+            on_release: 
+                app.root.transition = FadeTransition(duration=0.1)
+                app.root.current = "menu"
+                app.root.transition = SlideTransition(direction="left", duration=0.3)
+            background: ""
+            background_color: 0,0,0,0
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 0.5   # fondo negro semi-transparente
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 20, 20]
