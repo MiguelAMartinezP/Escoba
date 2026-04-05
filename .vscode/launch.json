@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Escoba - Debug",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "jinja": true,
+            "env": {
+                "PYTHONUNBUFFERED": "1"
+            }
+        },
+        {
+            "name": "Test Game",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_game.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}

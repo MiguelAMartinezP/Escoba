@@ -1,3 +1,5 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+
 <GameScreen>:
     canvas.before:
         Rectangle:
@@ -8,13 +10,42 @@
     CardGame:
         id: card_game
 
+    # Deck visualization
+    Image:
+        source: "assets/spanish_deck/BACK.PNG"
+        size_hint: 1, 1
+        pos_hint: {"center_x": 0.1, "center_y": 0.6}
+        
+    Label:
+        text: root.deck_cards_left + " cartas restantes"
+        font_size: 20
+        color: 1, 1, 1, 1
+        pos_hint: {"center_x": 0.1, "center_y": 0.5}
+
+    Label:
+        text: "Turn: " + root.current_player
+        font_size: 20
+        color: 1, 1, 1, 1
+        size_hint: 0.4, 0.1
+        pos_hint: {"center_x": 0.9, "center_y": 0.5}
+
+    # Error message for invalid plays
+    Label:
+        id: error_message
+        text: ""
+        font_size: 24
+        color: 1, 0, 0, 1  # Red text
+        size_hint: 0.8, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+        opacity: 0  # Initially hidden
+
     Button:
-        text: "Atras"
-        font_size: 32
+        text: "Salir"
+        font_size: 16
         color: 1, 0, 0, 1          # texto amarillo
         background_normal: ""     # quita la textura default
-        size_hint: 0.2, 0.10
-        pos_hint: {"center_x": 0.8, "center_y": 0.80}
+        size_hint: 0.1, 0.05
+        pos_hint: {"center_x": 0.9, "center_y": 0.9}
         on_release: 
             app.root.transition = SlideTransition(direction="right", duration=0.3)
             app.root.current = "play"
@@ -28,3 +59,70 @@
                 pos: self.pos
                 size: self.size
                 radius: [20, 20, 20, 20]
+
+<WinnerPopup@Popup>:
+    title: ""
+    separator_height: 0
+    size_hint: 0.6, 0.4
+    auto_dismiss: False
+    background: ""
+    background_color: 0, 0, 0, 0
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0.7
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20, 20, 20, 20]
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 20
+
+        Label:
+            id: message
+            text: "Ganador"
+            font_size: 28
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.width, None
+
+        BoxLayout:
+            size_hint_y: None
+            height: 60
+            spacing: 20
+
+            Button:
+                text: "Nueva partida"
+                font_size: 20
+                on_release:
+                    app.root.get_screen('game').restart_game()
+                    root.dismiss()
+                background: ""
+                background_color: 0.2, 0.6, 0.2, 0.9
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.6, 0.2, 0.9
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]
+
+            Button:
+                text: "Volver al menú"
+                font_size: 20
+                on_release:
+                    root.dismiss()
+                    app.root.transition = SlideTransition(direction='right', duration=0.3)
+                    app.root.current = 'menu'
+                background: ""
+                background_color: 0.7, 0.2, 0.2, 0.9
+                canvas.before:
+                    Color:
+                        rgba: 0.7, 0.2, 0.2, 0.9
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 20, 20]

@@ -17,7 +17,7 @@
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default
             size_hint: 0.3, 0.10
-            pos_hint: {"center_x": 0.5, "center_y": 0.60}
+            pos_hint: {"center_x": 0.5, "center_y": 0.55}
             on_release: 
                 app.root.transition = FadeTransition(duration=0.1)
                 app.root.current = "play"
@@ -33,30 +33,12 @@
                     radius: [20, 20, 20, 20]  
 
         Button:
-            text: "Personalizar Baraja"
-            font_size: 32
-            color: 1, 0, 0, 1          # texto amarillo
-            background_normal: ""     # quita la textura default
-            size_hint: 0.3, 0.10
-            pos_hint: {"center_x": 0.5, "center_y": 0.45}
-            on_release: app.root.current = "custom"
-            background: ""
-            background_color: 0,0,0,0
-            canvas.before:
-                Color:
-                    rgba: 0, 0, 0, 0.5
-                RoundedRectangle:
-                    pos: self.pos
-                    size: self.size
-                    radius: [20, 20, 20, 20]  
-
-        Button:
             text: "Opciones"
             font_size: 32
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default
             size_hint: 0.3, 0.10
-            pos_hint: {"center_x": 0.5, "center_y": 0.30}
+            pos_hint: {"center_x": 0.5, "center_y": 0.40}
             on_release: app.root.current = "config"
             background: ""
             background_color: 0,0,0,0
@@ -74,7 +56,7 @@
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default
             size_hint: 0.3, 0.10
-            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            pos_hint: {"center_x": 0.5, "center_y": 0.25}
             on_release:
                 Factory.ConfirmExitPopup().open()
             background: ""
