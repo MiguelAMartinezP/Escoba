@@ -2,7 +2,9 @@ from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.properties import ListProperty, BooleanProperty
-from kivy.graphics import Color, RoundedRectangle
+from kivy.graphics import Color, RoundedRectangle, Rectangle
+from kivy.core.text import Label as CoreLabel
+from kivy.app import App
 
 from .card import Card
 
@@ -70,11 +72,6 @@ class CardDisplay(Widget):
         )
         self.add_widget(self.card_image)
         
-        # Optional label (for bot cards)
-        if show_label:
-            self.label = Label(text=card_str, font_size='10sp')
-            self.add_widget(self.label)
-        
         # Trigger initial update
         self.bind(size=self._update_bg, show_back=self._update_image)
     
@@ -85,7 +82,7 @@ class CardDisplay(Widget):
     def _update_bg(self, *args):
         self.bg.pos = self.pos
         self.bg.size = self.size
-        # Update image size - scaled 1.3x to make texture appear zoomed in
+        # Update image size
         scale_factor = 1
         scaled_width = self.width * scale_factor
         scaled_height = self.height * scale_factor
@@ -93,12 +90,6 @@ class CardDisplay(Widget):
         offset_y = (self.height - scaled_height) / 2
         self.card_image.size = (scaled_width, scaled_height)
         self.card_image.pos = (self.x + offset_x, self.y + offset_y)
-        # Update label if exists - position below the card
-        if hasattr(self, 'label'):
-            label_height = 30
-            # Position label below card (y axis is relative to parent, so negative to go below)
-            self.label.pos = (self.x, self.y - label_height)
-            self.label.size = (self.width, label_height)
     
     def on_touch_down(self, touch):
         if self.is_selectable and self.collide_point(*touch.pos):
@@ -126,11 +117,18 @@ class CardGame(Widget):
         self.card_widgets = []
         self.bot_card_widgets = []
         self.table_card_widgets = []
+        self.label_widgets = []  # Track label widgets for cleanup
 
     def update_hands(self, human_hand, bot_hand, human_turn=True):
-        print(f"\n[UPDATE_HANDS] Human cards: {human_hand}")
-        print(f"[UPDATE_HANDS] Bot cards: {bot_hand}")
-        print(f"[UPDATE_HANDS] Human turn: {human_turn}")
+        try:
+            app = App.get_running_app()
+            debug = getattr(app, 'debug_mode', False)
+        except Exception:
+            debug = False
+        if debug:
+            print(f"\n[UPDATE_HANDS] Human cards: {human_hand}")
+            print(f"[UPDATE_HANDS] Bot cards: {bot_hand}")
+            print(f"[UPDATE_HANDS] Human turn: {human_turn}")
         self.human_cards = human_hand
         self.bot_cards = bot_hand
         self.human_turn = human_turn
@@ -138,7 +136,13 @@ class CardGame(Widget):
         self._update_card_interaction()
 
     def update_table(self, table_cards):
-        print(f"[UPDATE_TABLE] Table cards: {table_cards}")
+        try:
+            app = App.get_running_app()
+            debug = getattr(app, 'debug_mode', False)
+        except Exception:
+            debug = False
+        if debug:
+            print(f"[UPDATE_TABLE] Table cards: {table_cards}")
         self.table_cards = table_cards
         self._update_table_cards()
 
@@ -189,13 +193,32 @@ class CardGame(Widget):
         self.card_widgets = []
 
         # Create cards for human hand (bottom) - using actual Card widgets for interaction
-        print(f"[CREATE_WIDGETS] Creating {len(self.human_cards)} card widgets")
+        try:
+            app = App.get_running_app()
+            debug = getattr(app, 'debug_mode', False)
+        except Exception:
+            debug = False
+        if debug:
+            print(f"[CREATE_WIDGETS] Creating {len(self.human_cards)} card widgets")
+        
+        # Responsive sizing for human cards (bottom)
+        human_card_width = int(self.width * 0.085)  # 8.5% of screen width
+        human_card_height = int(self.height * 0.23)  # 23% of screen height
+        human_card_y = int(self.height * 0.03)  # 3% from bottom
+        
+        # Calculate total width needed for all cards + spacing
+        num_human_cards = len(self.human_cards)
+        card_spacing = int(self.width * 0.018)  # 1.8% spacing between cards
+        total_width = num_human_cards * human_card_width + (num_human_cards - 1) * card_spacing
+        start_x = (self.width - total_width) / 2  # Center horizontally
+        
         for i, card_str in enumerate(self.human_cards):
-            print(f"[CREATE_WIDGETS] Widget {i}: {card_str}")
+            if debug:
+                print(f"[CREATE_WIDGETS] Widget {i}: {card_str}")
             card = Card()
             card.size_hint = (None, None)
-            card.size = (200, 280)
-            card.pos = ((180 + i * 240) * 2, 50)
+            card.size = (human_card_width, human_card_height)
+            card.pos = (start_x + i * (human_card_width + card_spacing), human_card_y)
             card.card_str = card_str
             card.human_turn = self.human_turn
             self.add_widget(card)
@@ -206,6 +229,13 @@ class CardGame(Widget):
         
         # Create cards for table (middle)
         self._update_table_cards()
+        
+        # Bind to size changes to redraw cards responsively
+        self.bind(size=self._on_size_change)
+    
+    def _on_size_change(self, *args):
+        """Redraw cards when window size changes."""
+        self._create_card_widgets()
 
     def _update_card_interaction(self):
         """Update the human_turn property on all human cards."""
@@ -218,16 +248,58 @@ class CardGame(Widget):
             if card in self.children:
                 self.remove_widget(card)
         self.bot_card_widgets = []
+        
+        # Clear old labels
+        for lbl in self.label_widgets:
+            if lbl in self.children:
+                self.remove_widget(lbl)
+        self.label_widgets = []
 
         # Create cards for bot hand (top of screen)
+        show_labels = False
+        try:
+            app = App.get_running_app()
+            show_labels = getattr(app, 'debug_mode', False)
+            debug = getattr(app, 'debug_mode', False)
+        except Exception:
+            show_labels = False
+            debug = False
+        if debug:
+            print(f"[DEBUG_LABELS] bot show_labels={show_labels}")
+
+        # Responsive sizing for bot cards (top)
+        bot_card_width = int(self.width * 0.055)  # 5.5% of screen width
+        bot_card_height = int(self.height * 0.14)  # 14% of screen height
+        bot_card_y = int(self.height * 0.94 - bot_card_height)  # Near top
+        
+        # Calculate total width needed for all bot cards + spacing
+        num_bot_cards = len(self.bot_cards)
+        bot_card_spacing = int(self.width * 0.02)  # 2% spacing between cards
+        bot_total_width = num_bot_cards * bot_card_width + (num_bot_cards - 1) * bot_card_spacing
+        bot_start_x = (self.width - bot_total_width) / 2  # Center horizontally
+
         for i, card_str in enumerate(self.bot_cards):
-            card_display = CardDisplay(card_str, is_selectable=False, show_back=True, show_label=True)
+            card_display = CardDisplay(card_str, is_selectable=False, show_back=True, show_label=False)
+            card_x = bot_start_x + i * (bot_card_width + bot_card_spacing)
             card_display.size_hint = (None, None)
-            card_display.size = (100, 140)
-            card_display.pos = ((650 + i * 240), self.height - 190)
+            card_display.size = (bot_card_width, bot_card_height)
+            card_display.pos = (card_x, bot_card_y)
             self.add_widget(card_display)
             self.bot_card_widgets.append(card_display)
-
+            
+            # Add label below card if debug mode
+            if show_labels:
+                label_height = int(bot_card_height * 0.25)
+                label = Label(text=card_str, font_size='10sp', size_hint=(None, None), color=(1, 1, 1, 1), halign='center', valign='top')
+                label.texture_update()
+                label.size = (bot_card_width, label_height)
+                label.pos = (card_x, bot_card_y - label_height)
+                # Add background
+                with label.canvas.before:
+                    Color(0, 0, 0, 0.8)
+                    Rectangle(pos=label.pos, size=label.size)
+                self.add_widget(label)
+                self.label_widgets.append(label)
     def _update_table_cards(self):
         # Clear existing table cards
         for card in self.table_card_widgets:
@@ -235,24 +307,36 @@ class CardGame(Widget):
                 self.remove_widget(card)
         self.table_card_widgets = []
 
-        # Create cards for table (middle of screen) - 1.5x size, centered
-        card_width = 150
-        card_height = 210
-        spacing = 20
+        # Responsive sizing for table cards (middle)
+        table_card_width = int(self.width * 0.09)  # 9% of screen width
+        table_card_height = int(self.height * 0.215)  # 21.5% of screen height
         
         # Calculate total width needed
         num_cards = len(self.table_cards)
-        total_width = num_cards * card_width + (num_cards - 1) * spacing
+        table_card_spacing = int(self.width * 0.018)  # 1.8% spacing between cards
+        total_width = num_cards * table_card_width + (num_cards - 1) * table_card_spacing
         
-        # Center horizontally
+        # Center horizontally and vertically
         start_x = (self.width - total_width) / 2
-        center_y = self.height // 2 - card_height // 2
+        center_y = (self.height - table_card_height) / 2  # Middle of screen
         
+        # determine whether to show labels (debug mode)
+        show_labels_table = False
+        try:
+            app = App.get_running_app()
+            show_labels_table = getattr(app, 'debug_mode', False)
+            debug = getattr(app, 'debug_mode', False)
+        except Exception:
+            show_labels_table = False
+            debug = False
+        if debug:
+            print(f"[DEBUG_LABELS] table show_labels={show_labels_table}")
+
         for i, card_str in enumerate(self.table_cards):
             card_display = CardDisplay(card_str, is_selectable=True, show_back=False, show_label=False)
             card_display.size_hint = (None, None)
-            card_display.size = (card_width, card_height)
-            card_display.pos = (start_x + i * (card_width + spacing), center_y)
+            card_display.size = (table_card_width, table_card_height)
+            card_display.pos = (start_x + i * (table_card_width + table_card_spacing), center_y)
             self.add_widget(card_display)
             self.table_card_widgets.append(card_display)
 

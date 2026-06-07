@@ -93,35 +93,68 @@ class Player:
 
 class Bot(Player):
     """Bot player that inherits from Player and adds AI logic."""
-    def __init__(self, name: str = "Bot"):
+    def __init__(self, name: str = "Bot", difficulty: str = "medium"):
         super().__init__(name, is_human=False)
+        self.difficulty = difficulty  # "easy", "medium", or "hard"
 
     def choose_card_to_play(self, table_cards: List[CardModel]) -> tuple[Optional[CardModel], List[CardModel]]:
         """Simple AI logic to choose which card to play and which cards to capture."""
         if not self.hand:
             return None, []
 
-        # Simple strategy: try to capture if possible, else play lowest card
+        # Try to capture using difficulty-based logic
         for card in self.hand:
-            captured_cards = self.can_capture(card, table_cards)
+            captured_cards = self.can_capture(card, table_cards, difficulty=self.difficulty)
+
             if captured_cards:
+                print(f"[BOT] {self.difficulty.upper()} mode: Playing {card}, capturing {len(captured_cards)} cards")
                 return card, captured_cards
 
         # If no capture possible, play the card with lowest rank
-        return min(self.hand, key=lambda c: c.rank), []
+        card_to_play = min(self.hand, key=lambda c: c.rank)
+        print(f"[BOT] {self.difficulty.upper()} mode: No capture possible, playing lowest card: {card_to_play}")
+        return card_to_play, []
 
-    def can_capture(self, played_card: CardModel, table_cards: List[CardModel]) -> List[CardModel]:
-        """Check if the played card can capture any combination on the table and return the cards to capture."""
+    def can_capture(self, played_card: CardModel, table_cards: List[CardModel], difficulty: str = "easy") -> List[CardModel]:
         values = [card.value() for card in table_cards]
         played_value = played_card.value()
-        
-        # Check all possible combinations of table cards
+
+        valid_combinations: List[List[CardModel]] = []
+
         for r in range(1, len(values) + 1):
             for combo_indices in itertools.combinations(range(len(table_cards)), r):
                 combo_values = [values[i] for i in combo_indices]
+
                 if sum(combo_values) + played_value == 15:
-                    # Return the actual cards, not just values
-                    return [table_cards[i] for i in combo_indices]
+                    combo_cards = [table_cards[i] for i in combo_indices]
+                    valid_combinations.append(combo_cards)
+
+                    # Easy difficulty: return the first combination found
+                    if difficulty == "easy":
+                        if random.random() < 0.3:
+                            return []
+                        return combo_cards
+
+        if not valid_combinations:
+            return []
+
+        if difficulty == "medium":
+            return max(valid_combinations, key=len)
+
+        if difficulty == "hard":
+            def score(combo: List[CardModel]) -> int:
+                total = len(combo)
+                for card in combo:
+                    if card.value() == 7:
+                        total += 5
+                    if card.suit == "oros":
+                        total += 3
+                    if card.value() == 7 and card.suit == "oros":
+                        total += 100
+                return total
+
+            return max(valid_combinations, key=score)
+
         return []
 
 

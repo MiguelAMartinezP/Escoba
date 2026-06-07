@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  server:
+    build: ./server
+    container_name: websocket_server
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # client1:
+  #   build: ./client
+  #   container_name: client1
+  #   depends_on:
+  #     - server
+  #   networks:
+  #     - app-network
+  #   stdin_open: true
+  #   tty: true
+
+  # client2:
+  #   build: ./client
+  #   container_name: client2
+  #   depends_on:
+  #     - server
+  #   networks:
+  #     - app-network
+  #   stdin_open: true
+  #   tty: true
+
+networks:
+  app-network:

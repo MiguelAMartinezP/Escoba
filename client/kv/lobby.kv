@@ -1,0 +1,55 @@
+<LobbyScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+
+        canvas.before:
+            Color:
+                rgba: (0, 0, 0, 0.75)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: root.room_label_prefix + root.room_id
+            font_size: 30
+            color: (1, 1, 1, 1)
+
+        Label:
+            text: root.player_label_prefix + root.current_player_name
+            font_size: 30
+            color: (0.2, 0.8, 0.2, 1)
+
+        Label:
+            text: root.opponent_label_prefix + (root.opponent_name if root.opponent_name else root.waiting_text)
+            font_size: 30
+            color: (0.8, 0.2, 0.2, 1)
+
+        Label:
+            text: root.opponent_ready_message if root.opponent_ready and root.is_host else ""
+            font_size: 24
+            color: (0.2, 0.8, 0.2, 1)
+            size_hint_y: None
+            height: 30
+
+        BoxLayout:
+            size_hint_y: 0.2
+            spacing: 10
+
+            Button:
+                text: root.leave_button
+                on_press: root.leave_lobby()
+                size_hint_x: 0.5 if root.is_host else 1
+
+            Button:
+                text: root.create_game_button
+                disabled: not (root.opponent_name and root.opponent_ready and root.is_host)
+                size_hint_x: 0.5 if root.is_host else 0
+                on_press: root.create_game()
+
+            Button:
+                text: root.ready_button_text
+                disabled: root.player_ready or not root.host_name_received
+                size_hint_x: 0.5 if not root.is_host else 0
+                on_press: root.ready_to_play()

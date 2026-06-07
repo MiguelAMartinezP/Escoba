@@ -1,0 +1,71 @@
+{
+  "menu": {
+    "play": "Play",
+    "tutorial": "Tutorial",
+    "exit": "Exit",
+    "language": "Language"
+  },
+  "dialogs": {
+    "confirm_exit": "Are you sure you want to exit?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "game": {
+    "current_player": "Current Player",
+    "deck_cards": "Cards Left",
+    "cards_left": "cards left",
+    "turn": "Turn: ",
+    "exit": "Exit",
+    "winner": "Winner",
+    "tie": "Tie",
+    "cards": "Cards",
+    "golds": "Golds",
+    "sevens": "Sevens",
+    "golden_seven": "Golden Seven",
+    "sweeps": "Sweeps",
+    "restart": "Restart"
+  },
+  "play": {
+    "title": "Play",
+    "solo": "Solo",
+    "multiplayer": "Multiplayer",
+    "back": "Back"
+  },
+  "multiplayer": {
+    "title": "Multiplayer",
+    "player_name": "Player Name",
+    "room_name": "Room Name",
+    "create_lobby": "Create Lobby",
+    "join_lobby": "Join Lobby",
+    "back": "Back",
+    "error_invalid_player": "Enter a valid player name",
+    "error_invalid_room": "Enter a valid room name",
+    "status_ready": "Ready to connect",    "status_cannot_connect": "Could not connect to server",    "status_creating": "Creating lobby...",
+    "status_joining": "Joining lobby..."
+  },
+  "lobby": {
+    "title": "Lobby",
+    "room": "Room: ",
+    "player": "Player: ",
+    "opponent": "Opponent: ",
+    "waiting": "Waiting...",
+    "leave": "Leave",
+    "create_game": "Create Game",
+    "ready_to_play": "Ready to Play",
+    "opponent_ready": "Opponent Ready!"
+  },
+  "game_config": {
+    "title": "Select Difficulty",
+    "select_difficulty": "Choose difficulty level:",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "back": "Back"
+  },
+  "screens": {
+    "game": "Game",
+    "play": "Play",
+    "lobby": "Lobby",
+    "multiplayer": "Multiplayer"
+  }
+}

@@ -8,13 +8,13 @@
                 pos: self.pos
 
         Button:
-            text: "Solo"
+            text: root.solo_button
             font_size: 32
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default
             size_hint: 0.3, 0.10
             pos_hint: {"center_x": 0.5, "center_y": 0.55}
-            on_release: app.root.current = "game"
+            on_release: app.root.current = "game_config"
             background: ""
             background_color: 0,0,0,0
             canvas.before:
@@ -26,13 +26,13 @@
                     radius: [20, 20, 20, 20]  
 
         Button:
-            text: "Multijugador"
+            text: root.multiplayer_button
             font_size: 32
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default
             size_hint: 0.3, 0.10
             pos_hint: {"center_x": 0.5, "center_y": 0.40}
-            on_release: app.root.current = "construction"
+            on_release: app.root.current = "multiplayer_config"
             background: ""
             background_color: 0,0,0,0
             canvas.before:
@@ -44,7 +44,7 @@
                     radius: [20, 20, 20, 20]  
 
         Button:
-            text: "Atras"
+            text: root.back_button
             font_size: 32
             color: 1, 0, 0, 1          # texto amarillo
             background_normal: ""     # quita la textura default

@@ -1,9 +1,11 @@
 #:include kv/menu.kv
 #:include kv/game.kv
 #:include kv/play.kv
+#:include kv/game_config.kv
 #:include kv/custom.kv
-#:include kv/config.kv
+#:include kv/multiplayer_config.kv
 #:include kv/construction.kv
+#:include kv/lobby.kv
 #:include kv/widgets.kv
 
 #:import SlideTransition kivy.uix.screenmanager.SlideTransition
@@ -19,11 +21,11 @@ ScreenManager:
     PlayScreen:
         name: "play"
 
-    CustomScreen:
-        name: "custom"
+    MultiplayerConfigScreen:
+        name: "multiplayer_config"
 
-    ConfigScreen:
-        name: "config"
+    LobbyScreen:
+        name: "lobby"
 
     GameScreen:
         name: "game"

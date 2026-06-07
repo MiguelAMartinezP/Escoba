@@ -2,24 +2,39 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Escoba - Debug",
+            "name": "Python: Client (Main)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/main.py",
+            "program": "${workspaceFolder}/client/main.py",
             "console": "integratedTerminal",
-            "justMyCode": false,
-            "jinja": true,
-            "env": {
-                "PYTHONUNBUFFERED": "1"
-            }
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/client"
         },
         {
-            "name": "Test Game",
+            "name": "Python: Server",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/test_game.py",
+            "program": "${workspaceFolder}/server/server.py",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Test Client",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/client/test_game.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/client"
         }
     ]
 }

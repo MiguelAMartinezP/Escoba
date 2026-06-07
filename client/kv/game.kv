@@ -17,13 +17,13 @@
         pos_hint: {"center_x": 0.1, "center_y": 0.6}
         
     Label:
-        text: root.deck_cards_left + " cartas restantes"
+        text: root.deck_cards_left + " " + root.deck_cards_label
         font_size: 20
         color: 1, 1, 1, 1
         pos_hint: {"center_x": 0.1, "center_y": 0.5}
 
     Label:
-        text: "Turn: " + root.current_player
+        text: root.turn_label + root.current_player
         font_size: 20
         color: 1, 1, 1, 1
         size_hint: 0.4, 0.1
@@ -40,7 +40,7 @@
         opacity: 0  # Initially hidden
 
     Button:
-        text: "Salir"
+        text: root.exit_button
         font_size: 16
         color: 1, 0, 0, 1          # texto amarillo
         background_normal: ""     # quita la textura default

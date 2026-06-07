@@ -1,0 +1,71 @@
+{
+  "menu": {
+    "play": "Jugar",
+    "tutorial": "Tutorial",
+    "exit": "Salir",
+    "language": "Idioma"
+  },
+  "dialogs": {
+    "confirm_exit": "¿Seguro que quieres salir?",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "game": {
+    "current_player": "Jugador actual",
+    "deck_cards": "Cartas en mazo",
+    "cards_left": "cartas restantes",
+    "turn": "Turno: ",
+    "exit": "Salir",
+    "winner": "Ganador",
+    "tie": "Empate",
+    "cards": "Cartas",
+    "golds": "Oros",
+    "sevens": "Sietes",
+    "golden_seven": "Siete de oros",
+    "sweeps": "Escobas",
+    "restart": "Reiniciar"
+  },
+  "play": {
+    "title": "Jugar",
+    "solo": "Solo",
+    "multiplayer": "Multijugador",
+    "back": "Atrás"
+  },
+  "multiplayer": {
+    "title": "Multijugador",
+    "player_name": "Nombre del jugador",
+    "room_name": "Nombre de sala",
+    "create_lobby": "Crear sala",
+    "join_lobby": "Unirse a sala",
+    "back": "Atrás",
+    "error_invalid_player": "Ingresa un nombre de jugador válido",
+    "error_invalid_room": "Ingresa un nombre de sala válido",
+    "status_ready": "Listo para conectar",    "status_cannot_connect": "No se ha podido conectar con el servidor",    "status_creating": "Creando sala...",
+    "status_joining": "Uniéndose a la sala..."
+  },
+  "lobby": {
+    "title": "Lobby",
+    "room": "Sala: ",
+    "player": "Jugador: ",
+    "opponent": "Oponente: ",
+    "waiting": "Esperando...",
+    "leave": "Salir",
+    "create_game": "Crear juego",
+    "ready_to_play": "Listo para jugar",
+    "opponent_ready": "¡Oponente listo!"
+  },
+  "game_config": {
+    "title": "Seleccionar Dificultad",
+    "select_difficulty": "Elige el nivel de dificultad:",
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil",
+    "back": "Atrás"
+  },
+  "screens": {
+    "game": "Juego",
+    "play": "Jugar",
+    "lobby": "Lobby",
+    "multiplayer": "Multijugador"
+  }
+}
